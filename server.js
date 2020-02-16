@@ -2,7 +2,15 @@
 var cheerio = require("cheerio");
 // Makes HTTP request for HTML page
 var axios = require("axios");
-
+var express = require("express");
+var mongoose = require("mongoose");
+var PORT = 3000;
+var db = require("./models");
+var app = express();
+// 
+var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
+// 
+mongoose.
 // First, tell the console what server.js is doing
 console.log("\n***********************************\n" +
             "Grabbing every thread name and link\n" +
