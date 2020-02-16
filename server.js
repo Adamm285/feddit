@@ -9,24 +9,6 @@ var db = require("./models");
 var app = express();
 // 
 var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
-
-// const host = '0.0.0.0';
-// const port = process.env.PORT || 3000;
-
-// 
-// app.use(logger("dev"));
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-// app.use(express.static("public"));
-// 
-// var databaseUrl = "notetaker";
-// var collections = ["notes"];
-// Hook mongojs config to db variable
-// var db = mongojs(databaseUrl, collections);
-// // Log any mongojs errors to console
-// db.on("error", function(error) {
-//   console.log("Database Error:", error);
-// });
 // 
 mongoose.connect(MONGODB_URL, { useNewUrlParser: true });
 // 
@@ -80,7 +62,8 @@ app.get("/homepage", function (req, res) {
         console.log(results);
     });
 });
-console.log(MONGODB_URL)
+console.log(MONGODB_URL);
+console.log(MONGODB_URL + "/homepage");
 // 
 app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");
