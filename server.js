@@ -4,24 +4,26 @@ var cheerio = require("cheerio");
 var axios = require("axios");
 var express = require("express");
 var mongoose = require("mongoose");
-var PORT = 3000;
+var PORT = process.env.PORT || 5000;
 var db = require("./models");
 var app = express();
 // 
+var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
+
+// const host = '0.0.0.0';
+// const port = process.env.PORT || 3000;
 
 // 
 // app.use(logger("dev"));
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
 // app.use(express.static("public"));
-// // 
+// 
 // var databaseUrl = "notetaker";
 // var collections = ["notes"];
-// // Hook mongojs config to db variable
+// Hook mongojs config to db variable
 // var db = mongojs(databaseUrl, collections);
-
-var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
-// Log any mongojs errors to console
+// // Log any mongojs errors to console
 // db.on("error", function(error) {
 //   console.log("Database Error:", error);
 // });
@@ -30,6 +32,7 @@ mongoose.connect(MONGODB_URL, { useNewUrlParser: true });
 // 
 app.get("/", function (req, res) {
     res.render("login", {});
+    res.send("Hello world");
     // res.sendFile(path.join(__dirname + "./public/index.html"));
 });
 // 
@@ -41,7 +44,7 @@ app.get("/homepage", function (req, res) {
     // First, tell the console what server.js is doing
     console.log("\n***********************************\n" +
         "Grabbing every thread name and link\n" +
-        "from fedditt's webdev board:" +
+        "from redditt's webdev board:" +
         "\n***********************************\n");
     // Making a request via axios for reddit's "webdev" board. The page's HTML is passed as the callback's third argument
     axios.get("https://old.reddit.com/r/webdev/").then(function (response) {
@@ -77,6 +80,7 @@ app.get("/homepage", function (req, res) {
         console.log(results);
     });
 });
+console.log(MONGODB_URL)
 // 
 app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");
