@@ -13,7 +13,7 @@ var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.
 mongoose.connect(MONGODB_URL, { useNewUrlParser: true });
 // 
 app.get("/", function (req, res) {
-    res.render("login", {});
+    res.render("/login", {});
     // res.send("Hello world");
     // res.sendFile(path.join(__dirname + "./public/index.html"));
 });
