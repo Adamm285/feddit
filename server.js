@@ -12,17 +12,17 @@ var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.
 // 
 mongoose.connect(MONGODB_URL, { useNewUrlParser: true });
 // 
-app.get("/", function (req, res) {
-    // res.render("login", {});
-    // res.send("Hello world");
-    res.sendFile(path.join(__dirname + "./public/index.html"));
-});
-// 
-app.get("/signup", function (req, res) {
+// app.get("/", function (req, res) {
+//     // res.render("login", {});
+//     // res.send("Hello world");
+//     res.sendFile(path.join(__dirname + "./public/index.html"));
+// });
+// // 
+// app.get("/signup", function (req, res) {
 
-});
+// });
 // 
-app.get("/homepage", function (req, res) {
+app.get("/", function (req, res) {
     // First, tell the console what server.js is doing
     console.log("\n***********************************\n" +
         "Grabbing every thread name and link\n" +
@@ -63,7 +63,7 @@ app.get("/homepage", function (req, res) {
     });
 });
 console.log(MONGODB_URL);
-console.log(MONGODB_URL + "/homepage");
+// console.log(MONGODB_URL + "/homepage");
 // 
 app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");
