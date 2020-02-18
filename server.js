@@ -15,7 +15,10 @@ var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
+var exphbs = require("express-handlebars");
 
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 // Configure middleware
 
 // Use morgan logger for logging requests
@@ -29,7 +32,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
+// var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
 mongoose.connect("mongodb://localhost/unit18Populater", {
     useNewUrlParser: true
 });
@@ -39,12 +42,12 @@ mongoose.connect("mongodb://localhost/unit18Populater", {
 // A GET route for scraping the echoJS website
 app.get("/scrape", function (req, res) {
     // First, we grab the body of the html with axios
-    axios.get("http://www.echojs.com/").then(function (response) {
+    axios.get("https://old.reddit.com/r/webdev/").then(function (response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
 
         // Now, we grab every h2 within an article tag, and do the following:
-        $("article h2").each(function (i, element) {
+        $("p.title").each(function (i, element) {
             // Save an empty result object
             var result = {};
 
@@ -129,62 +132,65 @@ app.post("/articles/:id", function (req, res) {
             // If an error occurred, send it to the client
             res.json(err);
         });
+
+});
+
+// 
+app.get("/", function (req, res) {
+    res.render("login", {});
+    // res.send("Hello world");
+    // res.sendFile(path.join(__dirname + "./public/index.html"));
+});
+// // 
+app.get("/signup", function (req, res) {
+    res.render("signup", {});
 });
 // 
 // app.get("/", function (req, res) {
-//     // res.render("login", {});
-//     // res.send("Hello world");
-//     res.sendFile(path.join(__dirname + "./public/index.html"));
-// });
-// // 
-// app.get("/signup", function (req, res) {
+//     // First, tell the console what server.js is doing
+//     console.log("\n***********************************\n" +
+//         "Grabbing every thread name and link\n" +
+//         "from redditt's webdev board:" +
+//         "\n***********************************\n");
+//     // Making a request via axios for reddit's "webdev" board. The page's HTML is passed as the callback's third argument
+//     axios.get("https://old.reddit.com/r/webdev/").then(function (response) {
+//         // Load the HTML into cheerio and save it to a variable
+//         // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
+//         var $ = cheerio.load(response.data);
+//         // An empty array to save the data that we'll scrape
+//         var results = {};
+//         // With cheerio, find each p-tag with the "title" class
+//         // (i: iterator. element: the current element)
+//         $("p.title").each(function (i, element) {
+//             // Save the text of the element in a "title" variable
+//             var title = $(element).text();
+//             var description = $(element).text();
+//             // In the currently selected element, look at its child elements (i.e., its a-tags),
+//             // then save the values for any "href" attributes that the child elements may have
+//             var link = $(element).children().attr("href");
+//             // Save these results in an object that we'll push into the results array we defined earlier
+//             results.push({
+//                 title: title,
+//                 link: link,
+//                 // description: description
+//             });
+//             // 
+//             console.log(results);
+//             // 
+//             db.Article.create(results)
+//                 .then(function (err) {
+//                     console.log(err)
+//                 })
+//         });
+
+//         // Log the results once you've looped through each of the elements found with cheerio
+//         console.log(results);
+//     });
 
 // });
-// 
-app.get("/", function (req, res) {
-    // First, tell the console what server.js is doing
-    console.log("\n***********************************\n" +
-        "Grabbing every thread name and link\n" +
-        "from redditt's webdev board:" +
-        "\n***********************************\n");
-    // Making a request via axios for reddit's "webdev" board. The page's HTML is passed as the callback's third argument
-    axios.get("https://old.reddit.com/r/webdev/").then(function (response) {
-        // Load the HTML into cheerio and save it to a variable
-        // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-        var $ = cheerio.load(response.data);
-        // An empty array to save the data that we'll scrape
-        var results = {};
-        // With cheerio, find each p-tag with the "title" class
-        // (i: iterator. element: the current element)
-        $("p.title").each(function (i, element) {
-            // Save the text of the element in a "title" variable
-            var title = $(element).text();
-            var description = $(element).text();
-            // In the currently selected element, look at its child elements (i.e., its a-tags),
-            // then save the values for any "href" attributes that the child elements may have
-            var link = $(element).children().attr("href");
-            // Save these results in an object that we'll push into the results array we defined earlier
-            results.push({
-                title: title,
-                link: link,
-                description: description
-            });
-            // 
-            console.log(results);
-            // 
-            db.Article.create(results)
-                .then(function (err) {
-                    console.log(err)
-                })
-        });
-
-        // Log the results once you've looped through each of the elements found with cheerio
-        console.log(results);
-    });
-});
-console.log(MONGODB_URL);
+// console.log(MONGODB_URL);
 // console.log(MONGODB_URL + "/homepage");
 // 
 app.listen(PORT, function () {
-    console.log("App running on port " + PORT + "!");
+    console.log("App running on port " + PORT + "! http://localhost:" + PORT + "/");
 })
