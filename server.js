@@ -58,6 +58,7 @@ app.get("/", function (req, res) {
                     console.log(err)
                 })
         });
+        res.render("index", {})
         // Log the results once you've looped through each of the elements found with cheerio
         console.log(results);
     });
