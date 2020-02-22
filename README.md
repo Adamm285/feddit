@@ -2,8 +2,8 @@
 
 Feddit-fake reddit
 
-pull article from old reddit 
+1. pull articles from old reddit 
 
-make comments
+2. make comments
 
-clear article and scrape for new!
+3. clear articles and scrape for new!
