@@ -10,13 +10,9 @@ var ArticleSchema = new Schema({
       type: String,
       required: true
     },
-    description: {
-      type: String,
-      required: true
-    },
     comment: {
-        type: [{type: Schema.Types.ObjectId,
-        ref: "Comment"}]
+      type: [{type: Schema.Types.ObjectId,
+      ref: "Comment"}]
     }
 });
 // 

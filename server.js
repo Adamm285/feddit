@@ -17,10 +17,12 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 // Connect to the Mongo DB
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({
+    defaultLayout: "main"
+}));
 app.set("view engine", "handlebars");
 // var MONGODB_URL = process.env.MONGODB_URL || "mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp";
-mongoose.connect("mongodb://root:password1@ds121603.mlab.com:21603/heroku_4d5jj8cp", {
+mongoose.connect("mongodb://localhost/unit18Populater", {
     useNewUrlParser: true
 });
 // 
@@ -32,4 +34,5 @@ app.listen(PORT, function () {
     console.log("App running on port " + PORT + "! http://localhost:" + PORT + "/articles");
     console.log("App running on port " + PORT + "! http://localhost:" + PORT + "/articles/:id");
     console.log("App running on port " + PORT + "! http://localhost:" + PORT);
+    console.log("App running on port " + PORT + "! http://localhost:" + PORT + "/deleteAll");
 })
