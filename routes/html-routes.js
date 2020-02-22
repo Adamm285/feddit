@@ -47,7 +47,7 @@ module.exports = function (app) {
                     });
             });
             // Send a message to the client
-            res.send("Scrape Complete");
+            res.render("index", {});
         });
     });
     // Route for getting all Articles from the db
@@ -145,10 +145,12 @@ module.exports = function (app) {
             db.Article.deleteMany({}).then(function (data) {
                 console.log("database deleted");
             }).catch(function (err) {
-                console.log("mattsays")
+                console.log(err)
             })
         }).catch(function (err) {
-            console.log("mattsays")
+            console.log(err)
         })
+        res.render("index", {});
     });
+
 };
