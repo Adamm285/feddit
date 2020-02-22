@@ -1,9 +1,7 @@
 var mongoose = require("mongoose");
-
 var Schema = mongoose.Schema;
-
 var ArticleSchema = new Schema({
-    // `title` is required and of type String
+    img: String,
     title: {
       type: String,
       required: true
@@ -11,10 +9,17 @@ var ArticleSchema = new Schema({
     link: {
       type: String,
       required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    comment: {
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
     }
-
 });
-
+// 
 var Article = mongoose.model("Article", ArticleSchema);
-
+// 
 module.exports = Article;

@@ -1,13 +1,12 @@
+// Variables & Requires
 var cheerio = require("cheerio");
 var axios = require("axios");
 var mongoose = require("mongoose");
 var db = require("./../models");
 var linkBase = "https://old.reddit.com"
-
 // 
 module.exports = function (app) {
     // A GET route for scraping the echoJS website
-    // 
     app.get("/", function (req, res) {
         res.render("index", {});
     });
@@ -17,13 +16,10 @@ module.exports = function (app) {
         axios.get(linkBase).then(function (response) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(response.data);
-            // console.log(response.data);
-
             // Now, we grab every h2 within an article tag, and do the following:
             $("p.title").each(function (i, element) {
                 // Save an empty result object
                 var result = {};
-                // console.log(result)
                 // Add the text and href of every link, and save them as properties of the result object
                 result.title = $(element)
                     .children("a")
@@ -31,20 +27,19 @@ module.exports = function (app) {
                 result.link = $(element)
                     .children("a")
                     .attr("href");
-                    if (!result.title){
-                        result.title =  "title result not found!"
-                    };
-                    if (!result.link){
-                        result.link =  "link result not found!"
-                    }
-                    else if(result.link.indexOf("http") < 0 && result.link.indexOf("www.") < 0){
-                        result.link = linkBase + result.link;
-                    }
+                if (!result.title) {
+                    result.title = "title result not found!"
+                }
+                if (!result.link) {
+                    result.link = "link result not found!"
+                } else if (result.link.indexOf("http") < 0 && result.link.indexOf("www.") < 0) {
+                    result.link = linkBase + result.link;
+                }
                 // Create a new Article using the `result` object built from scraping
                 db.Article.create(result)
                     .then(function (dbArticle) {
                         // View the added result in the console
-                        console.log(dbArticle);
+                        console.log("this is the article" + dbArticle);
                     })
                     .catch(function (err) {
                         // If an error occurred, log it
@@ -68,6 +63,16 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
+    // 
+    app.get("/api/comments", function (req, res) {
+        db.Comment.find({})
+            .then(function (dbComment) {
+                res.json(dbComment);
+            })
+            .catch(function (err) {
+                res.json(err)
+            });
+    });
     // Route for grabbing a specific Article by id, populate it with it's note
     app.get("/articles/:id", function (req, res) {
         // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
@@ -75,7 +80,7 @@ module.exports = function (app) {
                 _id: req.params.id
             })
             // ..and populate all of the notes associated with it
-            .populate("note")
+            .populate("comment")
             .then(function (dbArticle) {
                 // If we were able to successfully find an Article with the given id, send it back to the client
                 res.json(dbArticle);
@@ -88,15 +93,12 @@ module.exports = function (app) {
     // Route for saving/updating an Article's associated Note
     app.post("/articles/:id", function (req, res) {
         // Create a new note and pass the req.body to the entry
-        db.Note.create(req.body)
-            .then(function (dbNote) {
-                // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-                // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-                // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+        db.Comment.create(req.body)
+            .then(function (dbComment) {
                 return db.Article.findOneAndUpdate({
                     _id: req.params.id
                 }, {
-                    note: dbNote._id
+                    note: dbComment._id
                 }, {
                     new: true
                 });
@@ -110,4 +112,27 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
-}
+    // 
+    app.post("/api/comments/:comment", function (req, res) {
+        db.Comment.create(req.body)
+            .then(function (dbComment) {
+
+                res.json(dbComment);
+            })
+            .catch(function (err) {
+                res.json(err)
+            });
+
+    });
+    // delete
+    app.delete("/api/comments/:id", function (req, res) {
+        var id = mongoose.Types.ObjectId(req.params.id);
+        db.Comment.deleteOne({
+            _id: id
+        }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+            console.log("Deleted")
+        });
+    });
+};

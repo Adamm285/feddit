@@ -1,0 +1,55 @@
+body { 
+    background-color: rgb(208, 244, 246);
+}
+
+#wrapper {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5%;
+}
+
+#articles {
+    display: inline-block;
+    overflow: auto;
+    width: 60%;
+    height: 700px;
+}
+#notes {
+    margin-bottom: 0%;
+    float: right;
+    width: 30%;
+}
+
+#comments {
+    margin-top: 5%;
+    float: right;
+    width: 30%;
+}
+
+textarea, input {
+    display: block;
+    width: 100%;
+    background-color: rgb(128, 171, 250);
+}
+      
+input {
+    height: 36px;
+    font-size: 24px;    
+}
+     
+textarea {
+    height: 200px;
+    font-size: 18px;
+}
+
+.jumbotron {
+    text-align: center;
+    margin-top: 10%;
+    background-color: rgb(128, 171, 250);
+    font-size: 44pt;
+}
+
+nav {
+    background-color: rgb(128, 171, 250);
+}
