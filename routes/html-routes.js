@@ -2,7 +2,7 @@
 var cheerio = require("cheerio");
 var axios = require("axios");
 var mongoose = require("mongoose");
-var db = require("./../models");
+var db = require("../models");
 var linkBase = "https://old.reddit.com"
 // 
 module.exports = function (app) {

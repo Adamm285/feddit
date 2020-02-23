@@ -6,4 +6,4 @@ Feddit-fake reddit
 
 2. make comments
 
-3. clear articles and scrape for new!
+3. clear articles and scrape for new ones!
